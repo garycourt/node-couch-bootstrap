@@ -1,0 +1,8 @@
+{
+	"name" : "node-couch-bootstrap",
+	"version" : "0.0.0",
+	"description" : "Bootstraps (loads code into) a Node.js instance using JavaScript code from a CouchDB/CouchApp document.",
+	"homepage" : "http://github.com/garycourt/node-couch-bootstrap",
+	"author" : "Gary Court <gary.court@gmail.com>",
+	"main" : "./index.js"
+}
