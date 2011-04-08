@@ -1,0 +1,6 @@
+{
+	"node" : {
+		"msg" : "exports.msg = 'Hello World!';",
+		"world" : "var msg = require('./msg').msg; process.stdout.write('Message: ' + msg + '\\n');"
+	}
+}
