@@ -5,7 +5,6 @@ Bootstraps (loads code into) a Node.js instance using JavaScript code from a Cou
 ## Installation
 
 	git clone https://github.com/garycourt/node-couch-bootstrap.git
-	git submodule update --init
 
 ## Usage
 
@@ -20,8 +19,7 @@ Here's an example:
 	}
 
 Place your bootstrap JSON document on an HTTP server. 
-Then, run node-couch-bootstrap with the URL of the JSON document, plus the path fragment to the main code.
-
+Then, run node-couch-bootstrap with the URL of the JSON document, plus the path fragment to the main code. 
 For example, if the JSON doc is hosted on a CouchDB server (as a design doc), you would load it using:
 
 	node node-couch-bootstrap http://localhost:5984/db/_design/bootstrap#/node/world
