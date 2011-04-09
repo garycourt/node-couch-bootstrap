@@ -1,5 +1,6 @@
 var uri = require("../lib/uri-js").URI,
-	http = require("http");
+	http = require("http"),
+	fs = require("fs");
 
 /**
  * Console object
@@ -29,27 +30,33 @@ exports.console = {
 exports.getDoc = function (url, callback) {
 	var urlComponents = uri.parse(url);
 	
-	return http.get({
-		host : urlComponents.host,
-		port : urlComponents.port,
-		path : urlComponents.path + (urlComponents.query ? "?" + urlComponents.query : "")
-	}, function onSuccess(res) {
-		var doc = "";
-		
-		if (res.statusCode >= 200 && res.statusCode < 300) {
-			res.on('data', function onData(chunk) {
-				doc += chunk;
-			});
+	if (urlComponents.scheme === "http") {
+		return http.get({
+			host : urlComponents.host,
+			port : urlComponents.port,
+			path : urlComponents.path + (urlComponents.query ? "?" + urlComponents.query : "")
+		}, function onSuccess(res) {
+			var doc = "";
 			
-			res.on('end', function onEnd() {
-				callback(null, doc);
-			});
-		} else {
-			callback(res.statusCode);
-		}
-	}).on('error', function onError(e) {
-		callback(e);
-	});
+			if (res.statusCode >= 200 && res.statusCode < 300) {
+				res.on('data', function onData(chunk) {
+					doc += chunk;
+				});
+				
+				res.on('end', function onEnd() {
+					callback(null, doc);
+				});
+			} else {
+				callback(res.statusCode);
+			}
+		}).on('error', function onError(e) {
+			callback(e);
+		});
+	} else if (urlComponents.scheme === "file" || !urlComponents.scheme) {
+		return fs.readFile(urlComponents.path, callback);
+	} else {
+		throw new Error("Unsupported URL scheme: " + urlComponents.scheme);
+	}
 };
 
 /**

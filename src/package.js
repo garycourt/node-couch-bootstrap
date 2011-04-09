@@ -26,6 +26,10 @@ function Package(doc, uri) {
 Package.prototype.execModule = function (path) {
 	var pkg = this, code, uriComponents, filename, script, sandbox;
 	
+	if (!path) {
+		throw new Error("No module specified.");
+	}
+	
 	if (!this.modules[path]) {
 		code = util.getPropertyByPath(pkg.doc, path);
 		
@@ -50,6 +54,8 @@ Package.prototype.execModule = function (path) {
 						absPath = uri.resolve(path, relPath);
 						requiredModule = pkg.execModule(absPath);
 						requiredExports = requiredModule && requiredModule.exports;
+					} else if (relPath === "bootstrapDoc") {
+						requiredExports = pkg.doc;
 					} else {
 						requiredExports = require(relPath);
 					}
